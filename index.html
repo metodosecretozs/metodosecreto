@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método Relâmpago 21 | Transformação Corporal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600&family=Montserrat:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-black: #0A0A0A;
+            --dark-black: #050505;
+            --light-black: #1A1A1A;
+            --primary-red: #D90429;
+            --dark-red: #9D0208;
+            --light-red: #FF4D6D;
+            --gradient-dark: linear-gradient(145deg, #050505 0%, #0A0A0A 30%, #1A1A1A 100%);
+            --gradient-red: linear-gradient(135deg, #9D0208 0%, #D90429 50%, #FF4D6D 100%);
+            --gradient-button: linear-gradient(135deg, #D90429 0%, #FF4D6D 100%);
+            --text-white: #FFFFFF;
+            --text-light: #F8F9FA;
+            --text-gray: #ADB5BD;
+            --card-bg: rgba(20, 20, 20, 0.8);
+            --border-color: rgba(217, 4, 41, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FF4D6D 30%, #D90429 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 15px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Aviso de Som - MAIS PRÓXIMO DO VÍDEO */
+        .sound-notice {
+            text-align: center;
+            margin-bottom: 8px;
+            margin-top: 60px;
+            color: var(--text-gray);
+            font-size: 13px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 400;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            opacity: 1;
+            padding: 0;
+            transition: opacity 1s ease-out;
+        }
+
+        .sound-notice.hidden {
+            opacity: 0;
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .sound-notice i {
+            color: var(--light-red);
+            margin-right: 8px;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        /* Video Section - Wistia */
+        .video-section {
+            padding: 0 0 50px;
+            position: relative;
+        }
+
+        .video-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--card-bg);
+        }
+
+        /* Container do Wistia */
+        .wistia-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* CTA Section - INICIALMENTE ESCONDIDO */
+        .cta-section {
+            padding: 40px 0 80px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .cta-section.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            height: auto;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--gradient-button);
+            color: var(--text-white);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(217, 4, 41, 0.25);
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            max-width: 320px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(217, 4, 41, 0.35);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .button-icon {
+            font-size: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover .button-icon {
+            transform: translateX(5px);
+        }
+
+        /* Footer Minimalista - MENOS OPACIDADE */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-gray);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            opacity: 0.7;
+        }
+
+        .method-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--gradient-red);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseButton {
+            0% {
+                box-shadow: 0 0 0 0 rgba(217, 4, 41, 0.7);
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 0 0 15px rgba(217, 4, 41, 0);
+                transform: scale(1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .fade-in-delay {
+            animation: fadeIn 0.8s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+
+        .fade-in-delay-2 {
+            animation: fadeIn 0.8s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .sound-notice {
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 0 15px;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
+            }
+            
+            .sound-notice {
+                font-size: 11px;
+                letter-spacing: 0.8px;
+                margin-bottom: 25px;
+            }
+            
+            .cta-button {
+                padding: 16px 35px;
+                font-size: 15px;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.9rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+            
+            .sound-notice {
+                font-size: 10px;
+                letter-spacing: 0.6px;
+                margin-bottom: 20px;
+            }
+            
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 14px;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title fade-in">DESCUBRA O MÉTODO QUE USAMOS PARA TRANSFORMAR NOSSO CORPO EM 21 DIAS</h1>
+            <p class="hero-subtitle fade-in-delay">
+                Acelere o emagrecimento sem abrir mão da comida de verdade, chega de dietas malucas que só fazem você desistir.
+            </p>
+            
+            <!-- Aviso de Som - MAIS PRÓXIMO DO VÍDEO -->
+            <div class="sound-notice fade-in-delay" id="soundNotice">
+                <i class="fas fa-volume-up"></i>
+                CLIQUE NO VÍDEO E ATIVE O SOM AGORA
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section - Wistia -->
+    <section class="video-section">
+        <div class="container">
+            <div class="video-container fade-in-delay-2">
+                <div class="wistia-container">
+                    <!-- Player Wistia com código fornecido -->
+                    <script src="https://fast.wistia.com/player.js" async></script>
+                    <script src="https://fast.wistia.com/embed/0au11ekw1l.js" async type="module"></script>
+                    <style>wistia-player[media-id='0au11ekw1l']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/0au11ekw1l/swatch'); display: block; filter: blur(5px); padding-top:56.25%; }</style> 
+                    <wistia-player media-id="0au11ekw1l" aspect="1.7777777777777777"></wistia-player>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section - INICIALMENTE ESCONDIDO -->
+    <section class="cta-section" id="ctaSection">
+        <div class="container">
+            <a href="https://go.tribopay.com.br/owf1gqa8td?fbclid=PAT01DUAPdf8lleHRuA2FlbQIxMABzcnRjBmFwcF9pZA81NjcwNjczNDMzNTI0MjcAAadZ7GUKypqgrY_99v3Gk6cOqZnOXpWl89oJ-OxylDYez4smizdzOUPvb8zByA_aem_oZQ14Xbsawtz4LRXRAVz9g" class="cta-button" id="checkout-button">
+                <span>QUERO CONHECER O MÉTODO</span>
+                <i class="fas fa-arrow-right button-icon"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer com Nome do Método - MENOS OPACIDADE -->
+    <footer class="footer">
+        <div class="container">
+            <div class="method-name">MÉTODO RELÂMPAGO 21</div>
+            <p>© 2026 • Método científico de transformação corporal</p>
+            <p style="font-size: 11px; margin-top: 15px; opacity: 0.6;">
+                Resultados podem variar de acordo com cada indivíduo. Consulte sempre um profissional de saúde.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // SISTEMA PARA MOSTRAR O BOTÃO NO TEMPO CERTO
+        // ============================================
+        function setupButtonTimer() {
+            // Tempo para mostrar o botão: 23 minutos e 42 segundos
+            const showButtonTime = (23 * 60) + 42; // 1422 segundos
+            let videoStarted = false;
+            let showButtonTimeout = null;
+            let buttonShown = false;
+            
+            console.log(`⏱️ Configurado: Botão aparecerá em: ${showButtonTime} segundos (23:42)`);
+            
+            // Obtém a seção CTA e esconde completamente
+            const ctaSection = document.getElementById('ctaSection');
+            if (ctaSection) {
+                ctaSection.style.display = 'none';
+            }
+            
+            // Função para mostrar o botão
+            function showCTAButton() {
+                if (buttonShown) return;
+                
+                buttonShown = true;
+                
+                if (ctaSection) {
+                    // Mostra a seção
+                    ctaSection.style.display = 'block';
+                    
+                    // Aguarda um frame para a transição CSS funcionar
+                    setTimeout(() => {
+                        ctaSection.classList.add('visible');
+                        
+                        // Adiciona animação de pulso ao botão
+                        const ctaButton = document.getElementById('checkout-button');
+                        if (ctaButton) {
+                            ctaButton.style.animation = 'pulseButton 2s infinite';
+                        }
+                        
+                        console.log('✅ BOTÃO APARECEU! (23:42 de vídeo)');
+                        
+                        // Rola suavemente até o botão
+                        setTimeout(() => {
+                            ctaSection.scrollIntoView({ 
+                                behavior: 'smooth',
+                                block: 'center'
+                            });
+                        }, 800);
+                    }, 50);
+                }
+            }
+            
+            // Sistema de detecção de reprodução do Wistia
+            function setupWistiaListeners() {
+                // Tenta detectar o player do Wistia
+                const checkForPlayer = setInterval(() => {
+                    const wistiaIframe = document.querySelector('iframe[src*="wistia"]');
+                    
+                    if (wistiaIframe && !videoStarted) {
+                        console.log('🎬 Player Wistia detectado! Configurando listeners...');
+                        
+                        // Fallback: Se não detectar início em 10 segundos, assume que começou
+                        setTimeout(() => {
+                            if (!videoStarted) {
+                                videoStarted = true;
+                                console.log('🎬 Vídeo considerado iniciado');
+                                startButtonCountdown();
+                                
+                                // Esconde o aviso de som após 1 minuto
+                                setTimeout(() => {
+                                    const soundNotice = document.getElementById('soundNotice');
+                                    if (soundNotice) {
+                                        soundNotice.classList.add('hidden');
+                                        console.log('🔇 Aviso de som escondido após 1 minuto');
+                                    }
+                                }, 60000); // 1 minuto = 60000 milissegundos
+                            }
+                        }, 10000);
+                        
+                        clearInterval(checkForPlayer);
+                    }
+                }, 1000);
+                
+                // Timeout para garantir que algo aconteça
+                setTimeout(() => {
+                    if (!videoStarted) {
+                        videoStarted = true;
+                        console.log('🎬 Timeout: Considerando vídeo iniciado');
+                        startButtonCountdown();
+                        
+                        // Esconde o aviso de som após 1 minuto mesmo sem vídeo iniciado
+                        setTimeout(() => {
+                            const soundNotice = document.getElementById('soundNotice');
+                            if (soundNotice) {
+                                soundNotice.classList.add('hidden');
+                                console.log('🔇 Aviso de som escondido após 1 minuto (timeout)');
+                            }
+                        }, 60000);
+                    }
+                }, 15000);
+                
+                // Esconde o aviso após 1 minuto independente de tudo
+                setTimeout(() => {
+                    const soundNotice = document.getElementById('soundNotice');
+                    if (soundNotice && !soundNotice.classList.contains('hidden')) {
+                        soundNotice.classList.add('hidden');
+                        console.log('🔇 Aviso de som escondido após 1 minuto (fallback)');
+                    }
+                }, 90000); // Fallback de 1.5 minutos
+            }
+            
+            function startButtonCountdown() {
+                console.log(`⏳ Contagem iniciada! Mostrando botão em ${showButtonTime} segundos...`);
+                
+                // Configura o timeout para mostrar o botão
+                showButtonTimeout = setTimeout(() => {
+                    showCTAButton();
+                }, showButtonTime * 1000);
+            }
+            
+            // Inicia o sistema de detecção
+            setupWistiaListeners();
+            
+            // Fallback final
+            setTimeout(() => {
+                if (!buttonShown) {
+                    console.log('⚠️ Fallback final: Mostrando botão após 30 minutos');
+                    showCTAButton();
+                }
+            }, 30 * 60 * 1000);
+        }
+        
+        // ============================================
+        // INICIALIZA TUDO
+        // ============================================
+        window.addEventListener('load', function() {
+            console.log('🚀 Página carregada!');
+            console.log('🎯 Botão será mostrado após 23:42 de vídeo');
+            console.log('👀 Botão está INVISÍVEL no início');
+            console.log('🔇 Aviso de som será escondido após 1 minuto');
+            
+            // Configura timer para mostrar o botão
+            setupButtonTimer();
+            
+            // Animações de entrada
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('fade-in')) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.video-container').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
